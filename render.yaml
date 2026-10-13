@@ -1,0 +1,22 @@
+services:
+  - type: web
+    name: pala-currency
+    runtime: node
+    plan: free
+    buildCommand: npm install --include=dev && npm run build
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: JWT_SECRET
+        generateValue: true
+      - key: DATABASE_URL
+        fromDatabase:
+          name: pala-db
+          property: connectionString
+databases:
+  - name: pala-db
+    plan: free
+    databaseName: pala
+    user: pala_app
